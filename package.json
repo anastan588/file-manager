@@ -1,0 +1,19 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "file manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anastan588/file-manager"
+  },
+  "keywords": [
+    "file",
+    "manager"
+  ],
+  "author": "anastan588",
+  "license": "ISC"
+}
