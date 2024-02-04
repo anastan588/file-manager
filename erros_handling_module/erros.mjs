@@ -1,17 +1,17 @@
 import { makePromtMessage } from '../index.mjs';
 
 export function errorCommon() {
-  console.log('Invalid input. Command doesn\'t exist');
+  console.log("Invalid input. Command doesn't exist");
   makePromtMessage();
 }
 
 export function errorMissedFolderName() {
-    console.log('Invalid input. Missed directory name');
-    makePromtMessage();
-  }
+  console.log('Invalid input. Missed directory name');
+  makePromtMessage();
+}
 export function errorMissedFileName() {
-    console.log('Invalid input. Missed file name');
-    makePromtMessage();
+  console.log('Invalid input. Missed file name');
+  makePromtMessage();
 }
 
 export function errorPath() {
@@ -20,12 +20,18 @@ export function errorPath() {
 }
 
 export function errorNotContent() {
-    console.log('Directory has no files and folders');
-    makePromtMessage();
-  }
+  console.log('Directory has no files and folders');
+  makePromtMessage();
+}
 
-  export function errorFileNotExist(file) {
-    console.log(`FS operation failed: File ${file} doesn't exist`);
-    makePromtMessage();
-  }
+export function errorFileNotExist(file) {
+  console.log(`FS operation failed: File ${file} doesn't exist`);
+  makePromtMessage();
+}
 
+export function errorFileAlreadyExist(file) {
+  console.log(
+    `FS operation failed: File ${file} already exist in current directory`
+  );
+  makePromtMessage();
+}

@@ -1,5 +1,4 @@
 import path from 'path';
-import { fileURLToPath } from 'url';
 import fs from 'fs';
 import { getCurrentDirectory, makePromtMessage } from '../index.mjs';
 import {
