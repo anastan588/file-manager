@@ -1,18 +1,17 @@
 import * as readline from 'readline';
 import path from 'path';
-import { upOperation } from './directory_operations/up.mjs';
+import { upOperation } from './directory_operations/upFolder.mjs';
+import { changeFolder } from './directory_operations/changeFolder.mjs';
 
-export function handleUserInput(input, currentDirectory) {
+export function handleUserInput(input) {
   const args = input.trim().split(' ');
-  console.log(args);
   const command = args[0].toLowerCase();
-  console.log(command);
   switch (command) {
     case 'up':
-      upOperation(currentDirectory);
+      upOperation();
       break;
     case 'cd':
-      // ... existing code for the "cd" command ...
+      changeFolder(args[1]);// ... existing code for the "cd" command ...
       break;
     case 'ls':
       // ... existing code for the "ls" command ...

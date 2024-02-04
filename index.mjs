@@ -9,21 +9,31 @@ export const readLine = readline.createInterface({
   output: process.stdout,
 });
 
+export let currentDirectory = path.resolve(process.env.USERPROFILE);
+console.log(currentDirectory);
+
 readLine.setPrompt('> ');
 readLine.prompt();
 
 readLine.on('line', (input) => {
   console.log(`Received input: ${input}`);
-  const currentDirectory = path.resolve(process.env.USERPROFILE);
-  console.log(`You are currently in ${currentDirectory}`);
+
   readLine.prompt();
   if (input.trim() === '.exit') {
     readLine.close();
   }
-  handleUserInput(input.trim(), currentDirectory);
+  handleUserInput(input.trim());
 });
 
 readLine.on('close', () => {
   console.log(`Thank you for using File Manager, ${username}, goodbye!`);
   process.exit(0);
 });
+
+export function setCurrentDirectory(newDirectory) {
+  currentDirectory = newDirectory;
+}
+
+export function getCurrentDirectory() {
+  return currentDirectory;
+}
