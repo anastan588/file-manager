@@ -1,7 +1,7 @@
 import path from 'path';
 import { makePromtMessage } from '../index.mjs';
 import { setCurrentDirectory, getCurrentDirectory } from '../index.mjs';
-import { errorCommon } from '../erros_handling/erros.mjs';
+import { errorCommon } from '../erros_handling_module/erros.mjs';
 
 export function upOperation() {
   let currentDirectory = getCurrentDirectory();

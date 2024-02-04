@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { getCurrentDirectory, makePromtMessage } from '../index.mjs';
 import Table from 'cli-table';
-import { errorNotContent } from '../erros_handling/erros.mjs';
+import { errorNotContent } from '../erros_handling_module/erros.mjs';
 
 function getDirectoryContents(directoryPath) {
   return new Promise((resolve, reject) => {

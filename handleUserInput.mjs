@@ -1,7 +1,7 @@
 import { upOperation } from './directory_operations_module/upFolder.mjs';
 import { changeFolder } from './directory_operations_module/changeFolder.mjs';
 import { printDirectoryContents } from './directory_operations_module/listFilesFolders.mjs';
-import { errorCommon } from './erros_handling/erros.mjs';
+import { errorCommon } from './erros_handling_module/erros.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');

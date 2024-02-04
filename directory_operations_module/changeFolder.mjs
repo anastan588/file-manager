@@ -2,7 +2,7 @@ import path from 'path';
 import { makePromtMessage } from '../index.mjs';
 import fs from 'fs';
 import { setCurrentDirectory, getCurrentDirectory } from '../index.mjs';
-import { errorMissedParamets, errorPath } from '../erros_handling/erros.mjs';
+import { errorMissedParamets, errorPath } from '../erros_handling_module/erros.mjs';
 
 export function changeFolder(directory) {
   if (directory === undefined) {
