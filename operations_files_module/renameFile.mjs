@@ -10,11 +10,11 @@ import {
 
 export function renameFileIncurrentDirectory(sourseFile, destinationFile) {
   if (sourseFile === undefined) {
-    errorSourceFileNotExist(sourceFilePath);
+    errorSourceFileNotExist();
     return;
   }
   if (destinationFile === undefined) {
-    errorDestinationFileNotExist(destinationFile);
+    errorDestinationFileNotExist();
     return;
   }
   const currentDirectory = getCurrentDirectory();
@@ -40,7 +40,7 @@ export function renameFileIncurrentDirectory(sourseFile, destinationFile) {
         }
       });
     } else {
-      errorFileAlreadyExist();
+      errorFileAlreadyExist(destinationFile);
       makePromtMessage();
     }
   });

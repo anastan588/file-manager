@@ -36,12 +36,26 @@ export function errorFileAlreadyExist(file) {
   makePromtMessage();
 }
 
-export function errorDestinationFileNotExist(file) {
-  console.log(`FS operation failed: Proper name of ${file} uderfined`);
+export function errorDestinationFileNotExist() {
+  console.log(`FS operation failed: Proper name of file} undefined`);
   makePromtMessage();
 }
 
-export function errorSourceFileNotExist(file) {
-  console.log(`FS operation failed: Wrong name of ${file} uderfined`);
+export function errorSourceFileNotExist() {
+  console.log(`FS operation failed: Wrong name of file undefined`);
+  makePromtMessage();
+}
+
+export function errorCopyFileNotExist() {
+  console.log(`FS operation failed: Name of copy file undefined`);
+  makePromtMessage();
+}
+
+export function errorNewFileNotExist() {
+  console.log(`FS operation failed: Name of new file undefined`);
+  makePromtMessage();
+}
+
+export function errorOfReadingFile(error) {
   makePromtMessage();
 }

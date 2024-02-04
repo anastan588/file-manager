@@ -1,9 +1,8 @@
 import * as readline from 'readline';
 import path from 'path';
-import { handleUserInput } from './handleUserInput.mjs';
+import { handleUserInput } from './common_module/handleUserInput.mjs';
 const username = process.argv[2].split('=')[1];
 console.log(`Welcome to the File Manager, ${username}!`);
-
 
 export const readLine = readline.createInterface({
   input: process.stdin,

@@ -4,6 +4,7 @@ import { getCurrentDirectory, makePromtMessage } from '../index.mjs';
 import {
   errorFileNotExist,
   errorMissedFileName,
+  errorOfReadingFile,
 } from '../erros_handling_module/erros.mjs';
 
 export function readFileIncurrentDirectory(file) {
@@ -17,9 +18,15 @@ export function readFileIncurrentDirectory(file) {
     if (err) {
       errorFileNotExist(file);
     } else {
-      fs.readFile(fileToRead, 'utf-8', (error, data) => {
-        if (error) return console.log(error);
-        console.log(data);
+      const readStream = fs.createReadStream(fileToRead, { encoding: 'utf8' });
+      readStream.on('data', (chunk) => {
+        console.log(chunk);
+      });
+      readStream.on('error', (error) => {
+        errorOfReadingFile(error);
+      });
+      readStream.on('end', () => {
+        console.log('File reading finished.');
         makePromtMessage();
       });
     }
