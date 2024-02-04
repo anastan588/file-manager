@@ -2,6 +2,7 @@ import { upOperation } from './directory_operations_module/upFolder.mjs';
 import { changeFolder } from './directory_operations_module/changeFolder.mjs';
 import { printDirectoryContents } from './directory_operations_module/listFilesFolders.mjs';
 import { errorCommon } from './erros_handling_module/erros.mjs';
+import { readFileIncurrentDirectory } from './operations_files_module/readFile.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');
@@ -15,6 +16,9 @@ export function handleUserInput(input) {
       break;
     case 'ls':
       printDirectoryContents();
+      break;
+    case 'cat':
+      readFileIncurrentDirectory(args[1]);
       break;
     case '.exit':
       process.exit(0);
