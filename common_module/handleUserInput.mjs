@@ -1,13 +1,14 @@
 import { upOperation } from '../directory_operations_module/upFolder.mjs';
 import { changeFolder } from '../directory_operations_module/changeFolder.mjs';
 import { printDirectoryContents } from '../directory_operations_module/listFilesFolders.mjs';
-import { errorCommon } from '../erros_handling_module/erros.mjs';
+import { errorCommon, errorPrefix } from '../erros_handling_module/erros.mjs';
 import { readFileIncurrentDirectory } from '../operations_files_module/readFile.mjs';
 import { createFileIncurrentDirectory } from '../operations_files_module/createFile.mjs';
 import { renameFileIncurrentDirectory } from '../operations_files_module/renameFile.mjs';
 import { copyFileIncurrentDirectory } from '../operations_files_module/copyFile.mjs';
 import { moveFileIncurrentDirectory } from '../operations_files_module/moveFile.mjs';
 import { deleteFileIncurrentDirectory } from '../operations_files_module/deleteFile.mjs';
+import { receiveOEL } from '../operating_system_module/eol.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');
@@ -46,6 +47,16 @@ export function handleUserInput(input) {
       break;
     case 'rm':
       deleteFileIncurrentDirectory(args[1]);
+      break;
+    case 'os':
+      const commandOsPrefix = args[1];
+      switch (commandOsPrefix) {
+        case '--EOL':
+          receiveOEL();
+          break;
+        default:
+          errorPrefix();
+      }
       break;
     case '.exit':
       process.exit(0);

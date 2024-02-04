@@ -4,7 +4,10 @@ export function errorCommon() {
   console.log("Invalid input. Command doesn't exist");
   makePromtMessage();
 }
-
+export function errorPrefix() {
+  console.log("Invalid input. Command prefix doesn't exist");
+  makePromtMessage();
+}
 export function errorMissedFolderName() {
   console.log('Invalid input. Missed directory name');
   makePromtMessage();
