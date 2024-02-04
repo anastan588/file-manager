@@ -7,6 +7,7 @@ import { createFileIncurrentDirectory } from '../operations_files_module/createF
 import { renameFileIncurrentDirectory } from '../operations_files_module/renameFile.mjs';
 import { copyFileIncurrentDirectory } from '../operations_files_module/copyFile.mjs';
 import { moveFileIncurrentDirectory } from '../operations_files_module/moveFile.mjs';
+import { deleteFileIncurrentDirectory } from '../operations_files_module/deleteFile.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');
@@ -42,6 +43,9 @@ export function handleUserInput(input) {
       const namesOfFilesToMove = args.slice(1);
       const [sourseFileToMove, destinationDirectoryToMove] = namesOfFilesToMove;
       moveFileIncurrentDirectory(sourseFileToMove, destinationDirectoryToMove);
+      break;
+    case 'rm':
+      deleteFileIncurrentDirectory(args[1]);
       break;
     case '.exit':
       process.exit(0);

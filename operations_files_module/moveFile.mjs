@@ -2,12 +2,10 @@ import path from 'path';
 import fs from 'fs';
 import { getCurrentDirectory, makePromtMessage } from '../index.mjs';
 import {
-  errorCopyFileNotExist,
   errorDirectoryNotExist,
   errorFileNotExist,
   errorMoveDirectoryNotExist,
   errorMoveFileNotExist,
-  errorNewDirectoryNotExist,
   errorOfCreatingDirectory,
   errorOfDeletingFile,
   errorOfReadingFile,
