@@ -10,15 +10,19 @@ export const readLine = readline.createInterface({
 });
 
 export let currentDirectory = path.resolve(process.env.USERPROFILE);
-console.log(currentDirectory);
+
 
 readLine.setPrompt('> ');
-readLine.prompt();
+
+
+export function makePromtMessage() {
+  readLine.prompt();
+}
 
 readLine.on('line', (input) => {
   console.log(`Received input: ${input}`);
 
-  readLine.prompt();
+  makePromtMessage();
   if (input.trim() === '.exit') {
     readLine.close();
   }

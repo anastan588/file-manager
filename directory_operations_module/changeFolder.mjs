@@ -1,9 +1,14 @@
 import path from 'path';
-import { readLine } from '../index.mjs';
+import { makePromtMessage } from '../index.mjs';
 import fs from 'fs';
 import { setCurrentDirectory, getCurrentDirectory } from '../index.mjs';
+import { errorMissedParamets, errorPath } from '../erros_handling/erros.mjs';
 
 export function changeFolder(directory) {
+  if (directory === undefined) {
+    errorMissedParamets();
+    return;
+  }
   let currentDirectory = getCurrentDirectory();
   console.log(directory);
   console.log(currentDirectory);
@@ -17,16 +22,15 @@ export function changeFolder(directory) {
         ].toLocaleLowerCase() === directory
       ) {
         console.log(`You are already in ${directory}`);
+        makePromtMessage();
       } else {
-        console.log('Invalid input: directory does not exist.');
+        errorPath();
       }
-
-      readLine.prompt();
     } else {
       console.log(newPath);
       setCurrentDirectory(newPath);
       console.log(`You are currently in ${newPath}`);
-      readLine.prompt();
+      makePromtMessage();
     }
   });
 }

@@ -1,7 +1,7 @@
-import * as readline from 'readline';
-import path from 'path';
-import { upOperation } from './directory_operations/upFolder.mjs';
-import { changeFolder } from './directory_operations/changeFolder.mjs';
+import { upOperation } from './directory_operations_module/upFolder.mjs';
+import { changeFolder } from './directory_operations_module/changeFolder.mjs';
+import { printDirectoryContents } from './directory_operations_module/listFilesFolders.mjs';
+import { errorCommon } from './erros_handling/erros.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');
@@ -11,15 +11,14 @@ export function handleUserInput(input) {
       upOperation();
       break;
     case 'cd':
-      changeFolder(args[1]);// ... existing code for the "cd" command ...
+      changeFolder(args[1]);
       break;
     case 'ls':
-      // ... existing code for the "ls" command ...
+      printDirectoryContents();
       break;
     case '.exit':
       process.exit(0);
     default:
-      console.log('Invalid input.');
-      console.log();
+      errorCommon();
   }
 }
