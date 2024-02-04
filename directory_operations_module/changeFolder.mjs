@@ -10,8 +10,6 @@ export function changeFolder(directory) {
     return;
   }
   let currentDirectory = getCurrentDirectory();
-  console.log(directory);
-  console.log(currentDirectory);
   const newPath = path.resolve(currentDirectory, directory);
   fs.access(newPath, (err) => {
     if (err) {

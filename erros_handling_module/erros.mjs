@@ -29,9 +29,20 @@ export function errorFileNotExist(file) {
   makePromtMessage();
 }
 
+export function errorDirectoryNotExist(directory) {
+  console.log(`FS operation failed: Directory ${directory} doesn't exist`);
+  makePromtMessage();
+}
 export function errorFileAlreadyExist(file) {
   console.log(
     `FS operation failed: File ${file} already exist in current directory`
+  );
+  makePromtMessage();
+}
+
+export function errorDirectoryAlreadyExist(directory) {
+  console.log(
+    `FS operation failed: Destination ${directory} already exist in current directory`
   );
   makePromtMessage();
 }
@@ -51,11 +62,22 @@ export function errorCopyFileNotExist() {
   makePromtMessage();
 }
 
-export function errorNewFileNotExist() {
-  console.log(`FS operation failed: Name of new file undefined`);
+export function errorNewDirectoryNotExist() {
+  console.log(`FS operation failed: Name of directory to copy undefined`);
   makePromtMessage();
 }
 
 export function errorOfReadingFile(error) {
+  console.error('Error reading file:', error);
+  makePromtMessage();
+}
+
+export function errorOfWritingFile(error) {
+  console.error('Error writing file:', error);
+  makePromtMessage();
+}
+
+export function errorOfCreatingDirectory(error) {
+  console.error('Error creating directory:', error);
   makePromtMessage();
 }

@@ -13,7 +13,7 @@ export function readFileIncurrentDirectory(file) {
     return;
   }
   const currentDirectory = getCurrentDirectory();
-  const fileToRead = path.join(currentDirectory, file);
+  const fileToRead = path.resolve(currentDirectory, file);
   fs.access(fileToRead, (err) => {
     if (err) {
       errorFileNotExist(file);

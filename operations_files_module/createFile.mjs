@@ -12,7 +12,7 @@ export function createFileIncurrentDirectory(file) {
     return;
   }
   const currentDirectory = getCurrentDirectory();
-  const fileToCreate = path.join(currentDirectory, file);
+  const fileToCreate = path.resolve(currentDirectory, file);
   fs.access(fileToCreate, (err) => {
     if (err) {
       fs.writeFile(fileToCreate, '', function (error) {

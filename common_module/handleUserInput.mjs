@@ -34,8 +34,8 @@ export function handleUserInput(input) {
       break;
     case 'cp':
       const namesOfFilesToCopy = args.slice(1);
-      const [sourseFileToCopy, destinationFileToCopy] = namesOfFilesToCopy;
-      copyFileIncurrentDirectory(sourseFileToCopy, destinationFileToCopy);
+      const [sourseFileToCopy, destinationDirectory] = namesOfFilesToCopy;
+      copyFileIncurrentDirectory(sourseFileToCopy, destinationDirectory);
       break;
     case '.exit':
       process.exit(0);

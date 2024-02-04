@@ -18,8 +18,8 @@ export function renameFileIncurrentDirectory(sourseFile, destinationFile) {
     return;
   }
   const currentDirectory = getCurrentDirectory();
-  const sourceFilePath = path.join(currentDirectory, sourseFile);
-  const destinationFilePath = path.join(currentDirectory, destinationFile);
+  const sourceFilePath = path.resolve(currentDirectory, sourseFile);
+  const destinationFilePath = path.resolve(currentDirectory, destinationFile);
   fs.access(destinationFilePath, (err) => {
     if (err) {
       fs.access(sourceFilePath, (err) => {
