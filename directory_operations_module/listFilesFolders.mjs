@@ -1,6 +1,5 @@
 import fs from 'fs';
 import { getCurrentDirectory, makePromtMessage } from '../index.mjs';
-import Table from 'cli-table';
 import { errorNotContent } from '../erros_handling_module/erros.mjs';
 
 function getDirectoryContents(directoryPath) {
@@ -35,15 +34,6 @@ export async function printDirectoryContents() {
     errorNotContent();
     return;
   }
-  const table = new Table({
-    head: ['(index)', 'Name', 'Type'],
-    colWidths: [10, 30, 10],
-    style: { head: ['cyan'] },
-  });
-
-  for (let i = 0; i < directoryContents.length; i += 1) {
-    table.push([i, directoryContents[i].name, directoryContents[i].type]);
-  }
-  console.log(table.toString());
+  console.table([...directoryContents]);
   makePromtMessage();
 }
