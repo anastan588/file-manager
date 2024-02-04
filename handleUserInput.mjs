@@ -4,6 +4,7 @@ import { printDirectoryContents } from './directory_operations_module/listFilesF
 import { errorCommon } from './erros_handling_module/erros.mjs';
 import { readFileIncurrentDirectory } from './operations_files_module/readFile.mjs';
 import { createFileIncurrentDirectory } from './operations_files_module/createFile.mjs';
+import { renameFileIncurrentDirectory } from './operations_files_module/renameFile.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');
@@ -23,6 +24,11 @@ export function handleUserInput(input) {
       break;
     case 'add':
       createFileIncurrentDirectory(args[1]);
+      break;
+    case 'rn':
+      const namesOfFiles = args.slice(1);
+      const [sourseFile, destinationFile] = namesOfFiles;
+      renameFileIncurrentDirectory(sourseFile, destinationFile);
       break;
     case '.exit':
       process.exit(0);

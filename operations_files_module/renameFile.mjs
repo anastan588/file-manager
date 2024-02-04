@@ -1,0 +1,47 @@
+import path from 'path';
+import fs from 'fs';
+import { getCurrentDirectory, makePromtMessage } from '../index.mjs';
+import {
+  errorDestinationFileNotExist,
+  errorFileAlreadyExist,
+  errorFileNotExist,
+  errorSourceFileNotExist,
+} from '../erros_handling_module/erros.mjs';
+
+export function renameFileIncurrentDirectory(sourseFile, destinationFile) {
+  if (sourseFile === undefined) {
+    errorSourceFileNotExist(sourceFilePath);
+    return;
+  }
+  if (destinationFile === undefined) {
+    errorDestinationFileNotExist(destinationFile);
+    return;
+  }
+  const currentDirectory = getCurrentDirectory();
+  const sourceFilePath = path.join(currentDirectory, sourseFile);
+  const destinationFilePath = path.join(currentDirectory, destinationFile);
+  fs.access(destinationFilePath, (err) => {
+    if (err) {
+      fs.access(sourceFilePath, (err) => {
+        if (err) {
+          errorFileNotExist(sourseFile);
+        } else {
+          fs.rename(
+            sourceFilePath,
+            destinationFilePath,
+            function (error, files) {
+              if (error) return console.log(error);
+              console.log(
+                `File ${sourseFile} has been renamed to ${destinationFile}'`
+              );
+              makePromtMessage();
+            }
+          );
+        }
+      });
+    } else {
+      errorFileAlreadyExist();
+      makePromtMessage();
+    }
+  });
+}

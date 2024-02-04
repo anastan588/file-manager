@@ -35,3 +35,13 @@ export function errorFileAlreadyExist(file) {
   );
   makePromtMessage();
 }
+
+export function errorDestinationFileNotExist(file) {
+  console.log(`FS operation failed: Proper name of ${file} uderfined`);
+  makePromtMessage();
+}
+
+export function errorSourceFileNotExist(file) {
+  console.log(`FS operation failed: Wrong name of ${file} uderfined`);
+  makePromtMessage();
+}
