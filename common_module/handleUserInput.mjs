@@ -6,6 +6,7 @@ import { readFileIncurrentDirectory } from '../operations_files_module/readFile.
 import { createFileIncurrentDirectory } from '../operations_files_module/createFile.mjs';
 import { renameFileIncurrentDirectory } from '../operations_files_module/renameFile.mjs';
 import { copyFileIncurrentDirectory } from '../operations_files_module/copyFile.mjs';
+import { moveFileIncurrentDirectory } from '../operations_files_module/moveFile.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');
@@ -36,6 +37,11 @@ export function handleUserInput(input) {
       const namesOfFilesToCopy = args.slice(1);
       const [sourseFileToCopy, destinationDirectory] = namesOfFilesToCopy;
       copyFileIncurrentDirectory(sourseFileToCopy, destinationDirectory);
+      break;
+    case 'mv':
+      const namesOfFilesToMove = args.slice(1);
+      const [sourseFileToMove, destinationDirectoryToMove] = namesOfFilesToMove;
+      moveFileIncurrentDirectory(sourseFileToMove, destinationDirectoryToMove);
       break;
     case '.exit':
       process.exit(0);

@@ -67,6 +67,16 @@ export function errorNewDirectoryNotExist() {
   makePromtMessage();
 }
 
+export function errorMoveFileNotExist() {
+  console.log(`FS operation failed: Name of move file undefined`);
+  makePromtMessage();
+}
+
+export function errorMoveDirectoryNotExist() {
+  console.log(`FS operation failed: Name of directory to move undefined`);
+  makePromtMessage();
+}
+
 export function errorOfReadingFile(error) {
   console.error('Error reading file:', error);
   makePromtMessage();
@@ -79,5 +89,10 @@ export function errorOfWritingFile(error) {
 
 export function errorOfCreatingDirectory(error) {
   console.error('Error creating directory:', error);
+  makePromtMessage();
+}
+
+export function errorOfDeletingFile(error) {
+  console.error('Error deleting source file:', error);
   makePromtMessage();
 }

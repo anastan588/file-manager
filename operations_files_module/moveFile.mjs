@@ -5,19 +5,22 @@ import {
   errorCopyFileNotExist,
   errorDirectoryNotExist,
   errorFileNotExist,
+  errorMoveDirectoryNotExist,
+  errorMoveFileNotExist,
   errorNewDirectoryNotExist,
   errorOfCreatingDirectory,
+  errorOfDeletingFile,
   errorOfReadingFile,
   errorOfWritingFile,
 } from '../erros_handling_module/erros.mjs';
 
-export function copyFileIncurrentDirectory(sourseFile, destinationDirectory) {
+export function moveFileIncurrentDirectory(sourseFile, destinationDirectory) {
   if (sourseFile === undefined) {
-    errorCopyFileNotExist();
+    errorMoveFileNotExist();
     return;
   }
   if (destinationDirectory === undefined) {
-    errorNewDirectoryNotExist();
+    errorMoveDirectoryNotExist();
     return;
   }
   const currentDirectory = getCurrentDirectory();
@@ -29,7 +32,7 @@ export function copyFileIncurrentDirectory(sourseFile, destinationDirectory) {
   );
   const parentDirectoryPath = path.dirname(sourceFilePath);
   let parentDirectoryPathArray = parentDirectoryPath.toLowerCase().split('\\');
- 
+
   if (parentDirectoryPathArray.includes(destinationDirectory.toLowerCase())) {
     let destinationPathArray = parentDirectoryPathArray.slice(
       0,
@@ -48,7 +51,7 @@ export function copyFileIncurrentDirectory(sourseFile, destinationDirectory) {
           errorOfCreatingDirectory(err);
         } else {
           console.log(
-            `Directory ${destinationDirectory} created successfully. You can try to copy file again`
+            `Directory ${destinationDirectory} created successfully. You can try to move file again`
           );
           makePromtMessage();
         }
@@ -71,10 +74,16 @@ export function copyFileIncurrentDirectory(sourseFile, destinationDirectory) {
           });
 
           writeStream.on('finish', () => {
-            console.log(
-              `Copy of file ${sourseFile} has been created in ${destinationDirectory} directory`
-            );
-            makePromtMessage();
+            fs.unlink(sourceFilePath, (err) => {
+              if (err) {
+                errorOfDeletingFile(err);
+                return;
+              }
+              console.log(
+                `File ${sourseFile} has been moved to ${destinationDirectory} directory successfully`
+              );
+              makePromtMessage();
+            });
           });
           readStream.pipe(writeStream);
         }
