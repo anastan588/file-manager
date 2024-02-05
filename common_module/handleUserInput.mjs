@@ -12,6 +12,7 @@ import { receiveOEL } from '../operating_system_module/eol.mjs';
 import { receiveCPU } from '../operating_system_module/cpu.mjs';
 import { receiveHomeDir } from '../operating_system_module/homeDir.mjs';
 import { receiveUserName } from '../operating_system_module/username.mjs';
+import { receiveCPUArchitecture } from '../operating_system_module/architecture.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');
@@ -65,6 +66,12 @@ export function handleUserInput(input) {
           break;
         case '--username':
           receiveUserName();
+          break;
+        case '--username':
+          receiveUserName();
+          break;
+        case '--architecture':
+          receiveCPUArchitecture();
           break;
         default:
           errorPrefix();
