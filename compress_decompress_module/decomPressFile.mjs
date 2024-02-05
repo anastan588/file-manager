@@ -3,16 +3,16 @@ import fs from 'fs';
 import zlib from 'zlib';
 import { getCurrentDirectory, makePromtMessage } from '../index.mjs';
 import {
-  errorCompressFileNotExist,
+  errorDeCompressFileNotExist,
   errorFileNotExist,
-  errorOfCompressionFile,
+  errorOfDeCompressionFile,
   errorOutFileAlredyExist,
   errorOutFileNotExist,
 } from '../erros_handling_module/erros.mjs';
 
-export function compressFile(fileToCompress, fileToOut) {
-  if (fileToCompress === undefined) {
-    errorCompressFileNotExist();
+export function decompressFile(fileToDeCompress, fileToOut) {
+  if (fileToDeCompress === undefined) {
+    errorDeCompressFileNotExist();
     return;
   }
   if (fileToOut === undefined) {
@@ -20,27 +20,27 @@ export function compressFile(fileToCompress, fileToOut) {
     return;
   }
   const currentDirectory = getCurrentDirectory();
-  const fileToCompressPath = path.resolve(currentDirectory, fileToCompress);
+  const fileToDeCompressPath = path.resolve(currentDirectory, fileToDeCompress);
   const fileToOutPath = path.resolve(currentDirectory, fileToOut);
 
   fs.access(fileToOutPath, (err) => {
     if (err) {
-      fs.access(fileToCompressPath, (err) => {
+      fs.access(fileToDeCompressPath, (err) => {
         if (err) {
-          errorFileNotExist(fileToCompress);
+          errorFileNotExist(fileToDeCompress);
         } else {
-          const streamToCompress = fs.createReadStream(fileToCompressPath);
+          const streamToDeCompress = fs.createReadStream(fileToDeCompressPath);
           const streamToOut = fs.createWriteStream(fileToOutPath);
-          const brotliStream = zlib.createBrotliCompress();
-          streamToCompress.pipe(brotliStream).pipe(streamToOut);
+          const brotliStream = zlib.createBrotliDecompress();
+          streamToDeCompress.pipe(brotliStream).pipe(streamToOut);
           streamToOut.on('finish', () => {
             console.log(
-              `Compression of ${fileToCompress} to ${fileToOut} file completed successfully.`
+              `Decompression of ${fileToDeCompress} to ${fileToOut} file completed successfully.`
             );
             makePromtMessage();
           });
           streamToOut.on('error', (error) => {
-            errorOfCompressionFile(error);
+            errorOfDeCompressionFile(error);
           });
           makePromtMessage();
         }

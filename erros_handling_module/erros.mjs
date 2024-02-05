@@ -118,3 +118,13 @@ export function errorOfCompressionFile(error) {
   console.error('Error compressing file:', error);
   makePromtMessage();
 }
+
+export function errorDeCompressFileNotExist() {
+  console.log(`FS operation failed: Decompress name of file undefined`);
+  makePromtMessage();
+}
+
+export function errorOfDeCompressionFile(error) {
+  console.error('Error decompressing file:', error);
+  makePromtMessage();
+}
