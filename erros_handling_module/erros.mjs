@@ -99,3 +99,22 @@ export function errorOfDeletingFile(error) {
   console.error('Error deleting source file:', error);
   makePromtMessage();
 }
+
+export function errorCompressFileNotExist() {
+  console.log(`FS operation failed: Compress name of file undefined`);
+  makePromtMessage();
+}
+
+export function errorOutFileNotExist() {
+  console.log(`FS operation failed: Name of out file undefined`);
+  makePromtMessage();
+}
+export function errorOutFileAlredyExist(file) {
+  console.log(`FS operation failed: File out ${file} already exist in current directory`);
+  makePromtMessage();
+}
+
+export function errorOfCompressionFile(error) {
+  console.error('Error compressing file:', error);
+  makePromtMessage();
+}

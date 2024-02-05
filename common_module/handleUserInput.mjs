@@ -14,6 +14,7 @@ import { receiveHomeDir } from '../operating_system_module/homeDir.mjs';
 import { receiveUserName } from '../operating_system_module/username.mjs';
 import { receiveCPUArchitecture } from '../operating_system_module/architecture.mjs';
 import { receiveFileHash } from '../hash_module/hash.mjs';
+import { compressFile } from '../compress_decompress_module/compressFile.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');
@@ -53,9 +54,14 @@ export function handleUserInput(input) {
     case 'rm':
       deleteFileIncurrentDirectory(args[1]);
       break;
-      case 'hash':
-        receiveFileHash(args[1]);
-        break;
+    case 'hash':
+      receiveFileHash(args[1]);
+      break;
+    case 'compress':
+      const namesOfFilesToCompress = args.slice(1);
+      const [fileToCompress, fileToOut] = namesOfFilesToCompress;
+      compressFile(fileToCompress, fileToOut);
+      break;
     case 'os':
       const commandOsPrefix = args[1];
       switch (commandOsPrefix) {

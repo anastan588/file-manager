@@ -36,7 +36,6 @@ export function copyFileIncurrentDirectory(sourseFile, destinationDirectory) {
       parentDirectoryPathArray.indexOf(destinationDirectory.toLowerCase()) + 1
     );
     let resultPath = destinationPathArray.join('\\');
-    console.log(resultPath);
     destinationDirectoryPath = resultPath;
   }
   let destinationFilePath = path.resolve(destinationDirectoryPath, sourseFile);
