@@ -1,0 +1,34 @@
+import path from 'path';
+import { makePromtMessage } from '../index.mjs';
+import fs from 'fs';
+import { setCurrentDirectory, getCurrentDirectory } from '../index.mjs';
+import { errorMissedFolderName, errorPath } from '../erros_handling_module/erros.mjs';
+
+export function changeFolder(directory) {
+  if (directory === undefined) {
+    errorMissedFolderName;
+    return;
+  }
+  let currentDirectory = getCurrentDirectory();
+  const newPath = path.resolve(currentDirectory, directory);
+  fs.access(newPath, (err) => {
+    if (err) {
+      const curFolderPathArray = currentDirectory.split('\\');
+      if (
+        curFolderPathArray[
+          curFolderPathArray.length - 1
+        ].toLocaleLowerCase() === directory
+      ) {
+        console.log(`You are already in ${directory}`);
+        makePromtMessage();
+      } else {
+        errorPath();
+      }
+    } else {
+      console.log(newPath);
+      setCurrentDirectory(newPath);
+      console.log(`You are currently in ${newPath}`);
+      makePromtMessage();
+    }
+  });
+}
