@@ -9,6 +9,7 @@ import { copyFileIncurrentDirectory } from '../operations_files_module/copyFile.
 import { moveFileIncurrentDirectory } from '../operations_files_module/moveFile.mjs';
 import { deleteFileIncurrentDirectory } from '../operations_files_module/deleteFile.mjs';
 import { receiveOEL } from '../operating_system_module/eol.mjs';
+import { receiveCPU } from '../operating_system_module/cpu.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');
@@ -53,6 +54,9 @@ export function handleUserInput(input) {
       switch (commandOsPrefix) {
         case '--EOL':
           receiveOEL();
+          break;
+        case '--cpus':
+          receiveCPU();
           break;
         default:
           errorPrefix();
