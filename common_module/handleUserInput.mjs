@@ -11,6 +11,7 @@ import { deleteFileIncurrentDirectory } from '../operations_files_module/deleteF
 import { receiveOEL } from '../operating_system_module/eol.mjs';
 import { receiveCPU } from '../operating_system_module/cpu.mjs';
 import { receiveHomeDir } from '../operating_system_module/homeDir.mjs';
+import { receiveUserName } from '../operating_system_module/username.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');
@@ -61,6 +62,9 @@ export function handleUserInput(input) {
           break;
         case '--homedir':
           receiveHomeDir();
+          break;
+        case '--username':
+          receiveUserName();
           break;
         default:
           errorPrefix();
