@@ -37,6 +37,7 @@ export function receiveFileHash(file) {
             ]
           } directory successfully`
         );
+        console.log(`You are currently in ${getCurrentDirectory()}`);
         makePromtMessage();
       });
     }

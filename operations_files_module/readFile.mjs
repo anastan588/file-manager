@@ -27,6 +27,7 @@ export function readFileIncurrentDirectory(file) {
       });
       readStream.on('end', () => {
         console.log('File reading finished.');
+        console.log(`You are currently in ${getCurrentDirectory()}`);
         makePromtMessage();
       });
     }

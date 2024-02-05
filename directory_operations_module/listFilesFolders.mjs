@@ -35,5 +35,6 @@ export async function printDirectoryContents() {
     return;
   }
   console.table([...directoryContents]);
+  console.log(`You are currently in ${getCurrentDirectory()}`);
   makePromtMessage();
 }

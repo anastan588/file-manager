@@ -1,7 +1,13 @@
 import { upOperation } from '../directory_operations_module/upFolder.mjs';
 import { changeFolder } from '../directory_operations_module/changeFolder.mjs';
 import { printDirectoryContents } from '../directory_operations_module/listFilesFolders.mjs';
-import { errorCommon, errorPrefix } from '../erros_handling_module/erros.mjs';
+import {
+  errorCommon,
+  errorExtra,
+  errorNameOfFile,
+  errorNameOfFolder,
+  errorPrefix,
+} from '../erros_handling_module/erros.mjs';
 import { readFileIncurrentDirectory } from '../operations_files_module/readFile.mjs';
 import { createFileIncurrentDirectory } from '../operations_files_module/createFile.mjs';
 import { renameFileIncurrentDirectory } from '../operations_files_module/renameFile.mjs';
@@ -22,54 +28,126 @@ export function handleUserInput(input) {
   const command = args[0].toLowerCase();
   switch (command) {
     case 'up':
+      if (args.length > 1) {
+        errorExtra();
+        break;
+      }
       upOperation();
       break;
     case 'cd':
+      if (args[1].split('.').length > 1) {
+        errorNameOfFolder();
+        break;
+      }
       changeFolder(args[1]);
       break;
     case 'ls':
+      if (args.length > 1) {
+        errorExtra();
+        break;
+      }
       printDirectoryContents();
       break;
     case 'cat':
+      if (args[1].split('.').length === 1) {
+        errorNameOfFile();
+        break;
+      }
       readFileIncurrentDirectory(args[1]);
       break;
     case 'add':
+      if (args[1].split('.').length === 1) {
+        errorNameOfFile();
+        break;
+      }
       createFileIncurrentDirectory(args[1]);
       break;
     case 'rn':
       const namesOfFilesToRename = args.slice(1);
       const [sourseFileToRename, destinationFileToRename] =
         namesOfFilesToRename;
+      if (sourseFileToRename.split('.').length === 1) {
+        errorNameOfFile();
+        break;
+      }
+      if (destinationFileToRename.split('.').length === 1) {
+        errorNameOfFile();
+        break;
+      }
       renameFileIncurrentDirectory(sourseFileToRename, destinationFileToRename);
       break;
     case 'cp':
       const namesOfFilesToCopy = args.slice(1);
       const [sourseFileToCopy, destinationDirectory] = namesOfFilesToCopy;
+      if (sourseFileToCopy.split('.').length === 1) {
+        errorNameOfFile();
+        break;
+      }
+      if (destinationDirectory.split('.').length > 1) {
+        errorNameOfFolder();
+        break;
+      }
       copyFileIncurrentDirectory(sourseFileToCopy, destinationDirectory);
       break;
     case 'mv':
       const namesOfFilesToMove = args.slice(1);
       const [sourseFileToMove, destinationDirectoryToMove] = namesOfFilesToMove;
+      if (sourseFileToMove.split('.').length === 1) {
+        errorNameOfFile();
+        break;
+      }
+      if (destinationDirectoryToMove.split('.').length > 1) {
+        errorNameOfFolder();
+        break;
+      }
       moveFileIncurrentDirectory(sourseFileToMove, destinationDirectoryToMove);
       break;
     case 'rm':
+      if (args[1].split('.').length === 1) {
+        errorNameOfFile();
+        break;
+      }
       deleteFileIncurrentDirectory(args[1]);
       break;
     case 'hash':
+      if (args[1].split('.').length === 1) {
+        errorNameOfFile();
+        break;
+      }
       receiveFileHash(args[1]);
       break;
     case 'compress':
       const namesOfFilesToCompress = args.slice(1);
       const [fileToCompress, fileToOut] = namesOfFilesToCompress;
+      if (fileToCompress.split('.').length === 1) {
+        errorNameOfFile();
+        break;
+      }
+      if (fileToOut.split('.').length === 1) {
+        errorNameOfFile();
+        break;
+      }
       compressFile(fileToCompress, fileToOut);
       break;
     case 'decompress':
       const namesOfFilesToDeCompress = args.slice(1);
       const [fileToDECompress, fileToOutDe] = namesOfFilesToDeCompress;
+      if (fileToDECompress.split('.').length === 1) {
+        errorNameOfFile();
+        break;
+      }
+      if (fileToOutDe.split('.').length === 1) {
+        errorNameOfFile();
+        break;
+      }
       decompressFile(fileToDECompress, fileToOutDe);
       break;
     case 'os':
       const commandOsPrefix = args[1];
+      if (args.length > 2) {
+        errorExtra();
+        break;
+      }
       switch (commandOsPrefix) {
         case '--EOL':
           receiveOEL();
@@ -79,9 +157,6 @@ export function handleUserInput(input) {
           break;
         case '--homedir':
           receiveHomeDir();
-          break;
-        case '--username':
-          receiveUserName();
           break;
         case '--username':
           receiveUserName();

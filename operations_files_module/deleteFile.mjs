@@ -30,6 +30,7 @@ export function deleteFileIncurrentDirectory(file) {
             ]
           } directory successfully`
         );
+        console.log(`You are currently in ${getCurrentDirectory()}`);
         makePromtMessage();
       });
     }

@@ -23,6 +23,7 @@ export function createFileIncurrentDirectory(file) {
             ]
           } directory`
         );
+        console.log(`You are currently in ${getCurrentDirectory()}`);
         makePromtMessage();
       });
     } else {

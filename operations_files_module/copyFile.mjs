@@ -29,7 +29,7 @@ export function copyFileIncurrentDirectory(sourseFile, destinationDirectory) {
   );
   const parentDirectoryPath = path.dirname(sourceFilePath);
   let parentDirectoryPathArray = parentDirectoryPath.toLowerCase().split('\\');
- 
+
   if (parentDirectoryPathArray.includes(destinationDirectory.toLowerCase())) {
     let destinationPathArray = parentDirectoryPathArray.slice(
       0,
@@ -49,6 +49,7 @@ export function copyFileIncurrentDirectory(sourseFile, destinationDirectory) {
           console.log(
             `Directory ${destinationDirectory} created successfully. You can try to copy file again`
           );
+          console.log(`You are currently in ${getCurrentDirectory()}`);
           makePromtMessage();
         }
       });
@@ -73,6 +74,7 @@ export function copyFileIncurrentDirectory(sourseFile, destinationDirectory) {
             console.log(
               `Copy of file ${sourseFile} has been created in ${destinationDirectory} directory`
             );
+            console.log(`You are currently in ${getCurrentDirectory()}`);
             makePromtMessage();
           });
           readStream.pipe(writeStream);

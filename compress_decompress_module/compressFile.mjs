@@ -37,6 +37,7 @@ export function compressFile(fileToCompress, fileToOut) {
             console.log(
               `Compression of ${fileToCompress} to ${fileToOut} file completed successfully.`
             );
+            console.log(`You are currently in ${getCurrentDirectory()}`);
             makePromtMessage();
           });
           streamToOut.on('error', (error) => {

@@ -32,8 +32,9 @@ export function renameFileIncurrentDirectory(sourseFile, destinationFile) {
             function (error, files) {
               if (error) return console.log(error);
               console.log(
-                `File ${sourseFile} has been renamed to ${destinationFile}'`
+                `File ${sourseFile} has been renamed to ${destinationFile}`
               );
+              console.log(`You are currently in ${getCurrentDirectory()}`);
               makePromtMessage();
             }
           );

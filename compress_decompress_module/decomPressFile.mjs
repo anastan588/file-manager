@@ -37,6 +37,7 @@ export function decompressFile(fileToDeCompress, fileToOut) {
             console.log(
               `Decompression of ${fileToDeCompress} to ${fileToOut} file completed successfully.`
             );
+            console.log(`You are currently in ${getCurrentDirectory()}`);
             makePromtMessage();
           });
           streamToOut.on('error', (error) => {

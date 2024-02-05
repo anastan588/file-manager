@@ -51,6 +51,7 @@ export function moveFileIncurrentDirectory(sourseFile, destinationDirectory) {
           console.log(
             `Directory ${destinationDirectory} created successfully. You can try to move file again`
           );
+          console.log(`You are currently in ${getCurrentDirectory()}`);
           makePromtMessage();
         }
       });
@@ -80,6 +81,7 @@ export function moveFileIncurrentDirectory(sourseFile, destinationDirectory) {
               console.log(
                 `File ${sourseFile} has been moved to ${destinationDirectory} directory successfully`
               );
+              console.log(`You are currently in ${getCurrentDirectory()}`);
               makePromtMessage();
             });
           });
