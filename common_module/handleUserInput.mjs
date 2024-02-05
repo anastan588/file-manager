@@ -13,6 +13,7 @@ import { receiveCPU } from '../operating_system_module/cpu.mjs';
 import { receiveHomeDir } from '../operating_system_module/homeDir.mjs';
 import { receiveUserName } from '../operating_system_module/username.mjs';
 import { receiveCPUArchitecture } from '../operating_system_module/architecture.mjs';
+import { receiveFileHash } from '../hash_module/hash.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');
@@ -52,6 +53,9 @@ export function handleUserInput(input) {
     case 'rm':
       deleteFileIncurrentDirectory(args[1]);
       break;
+      case 'hash':
+        receiveFileHash(args[1]);
+        break;
     case 'os':
       const commandOsPrefix = args[1];
       switch (commandOsPrefix) {
