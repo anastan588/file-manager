@@ -58,6 +58,7 @@ export function decompressFile(fileInput, outputInput) {
           makePromtMessage();
         });
       });
+      
       writeStream.on('error', (error) => {
         errorOfDeCompressionFile(error);
       });
