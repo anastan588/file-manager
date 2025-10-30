@@ -8,41 +8,47 @@ import {
   errorSourceFileNotExist,
 } from '../erros_handling_module/erros.mjs';
 
-export function renameFileIncurrentDirectory(sourseFile, destinationFile) {
-  if (sourseFile === undefined) {
+export function renameFileIncurrentDirectory(sourceInput, destinationInput) {
+  if (!sourceInput) {
     errorSourceFileNotExist();
     return;
   }
-  if (destinationFile === undefined) {
+  if (!destinationInput) {
     errorDestinationFileNotExist();
     return;
   }
   const currentDirectory = getCurrentDirectory();
-  const sourceFilePath = path.resolve(currentDirectory, sourseFile);
-  const destinationFilePath = path.resolve(currentDirectory, destinationFile);
-  fs.access(destinationFilePath, (err) => {
-    if (err) {
-      fs.access(sourceFilePath, (err) => {
-        if (err) {
-          errorFileNotExist(sourseFile);
-        } else {
-          fs.rename(
-            sourceFilePath,
-            destinationFilePath,
-            function (error, files) {
-              if (error) return console.log(error);
-              console.log(
-                `File ${sourseFile} has been renamed to ${destinationFile}`
-              );
-              console.log(`You are currently in ${getCurrentDirectory()}`);
-              makePromtMessage();
-            }
-          );
-        }
-      });
-    } else {
-      errorFileAlreadyExist(destinationFile);
+  const sourcePath = path.isAbsolute(sourceInput)
+    ? sourceInput
+    : path.resolve(currentDirectory, sourceInput);
+  const destinationPath = path.isAbsolute(destinationInput)
+    ? destinationInput
+    : path.resolve(currentDirectory, destinationInput);
+
+  fs.access(destinationPath, fs.constants.F_OK, (destErr) => {
+    if (!destErr) {
+      errorFileAlreadyExist(destinationInput);
       makePromtMessage();
+      return;
     }
+    fs.access(sourcePath, fs.constants.F_OK, (srcErr) => {
+      if (srcErr) {
+        errorFileNotExist(sourceInput);
+        return;
+      }
+      fs.rename(sourcePath, destinationPath, (renameErr) => {
+        if (renameErr) {
+          console.error(`Rename failed: ${renameErr.message}`);
+          makePromtMessage();
+          return;
+        }
+        const oldName = path.basename(sourcePath);
+        const newName = path.basename(destinationPath);
+        const targetDir = path.basename(path.dirname(destinationPath));
+        console.log(`File "${oldName}" has been renamed to "${newName}" in "${targetDir}"`);
+        console.log(`You are currently in ${getCurrentDirectory()}`);
+        makePromtMessage();
+      });
+    });
   });
 }

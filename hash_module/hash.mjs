@@ -8,38 +8,38 @@ import {
   errorOfReadingFile,
 } from '../erros_handling_module/erros.mjs';
 
-export function receiveFileHash(file) {
-  if (file === undefined) {
+export function receiveFileHash(fileInput) {
+  if (!fileInput) {
     errorMissedFileName();
     return;
   }
+
   const currentDirectory = getCurrentDirectory();
-  const fileToHash = path.resolve(currentDirectory, file);
-  fs.access(fileToHash, (err) => {
+  const filePath = path.isAbsolute(fileInput)
+    ? fileInput
+    : path.resolve(currentDirectory, fileInput);
+
+  fs.access(filePath, fs.constants.F_OK, (err) => {
     if (err) {
-      errorFileNotExist(file);
-    } else {
-      const hash = crypto.createHash('sha256');
-      const stream = fs.createReadStream(fileToHash);
-      stream.on('data', (data) => {
-        hash.update(data);
-      });
-      stream.on('error', (error) => {
-        errorOfReadingFile(error);
-      });
-      stream.on('end', () => {
-        const hexHash = hash.digest('hex');
-        console.log('File SHA256 hash:', hexHash);
-        console.log(
-          `File ${file} has been cashed from ${
-            currentDirectory.split('\\')[
-              currentDirectory.split('\\').length - 1
-            ]
-          } directory successfully`
-        );
-        console.log(`You are currently in ${getCurrentDirectory()}`);
-        makePromtMessage();
-      });
+      errorFileNotExist(fileInput);
+      return;
     }
+    const hash = crypto.createHash('sha256');
+    const stream = fs.createReadStream(filePath);
+    stream.on('data', (chunk) => {
+      hash.update(chunk);
+    });
+    stream.on('error', (error) => {
+      errorOfReadingFile(error);
+    });
+    stream.on('end', () => {
+      const hexHash = hash.digest('hex');
+      const fileName = path.basename(filePath);
+      const parentDir = path.basename(path.dirname(filePath));
+      console.log(`File "${fileName}" hashed successfully (SHA256): ${hexHash}`);
+      console.log(`Located in "${parentDir}"`);
+      console.log(`You are currently in ${getCurrentDirectory()}`);
+      makePromtMessage();
+    });
   });
 }

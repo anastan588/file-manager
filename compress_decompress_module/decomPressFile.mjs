@@ -8,46 +8,59 @@ import {
   errorOfDeCompressionFile,
   errorOutFileAlredyExist,
   errorOutFileNotExist,
+  errorOfDeletingFile,
 } from '../erros_handling_module/erros.mjs';
 
-export function decompressFile(fileToDeCompress, fileToOut) {
-  if (fileToDeCompress === undefined) {
+export function decompressFile(fileInput, outputInput) {
+  if (!fileInput) {
     errorDeCompressFileNotExist();
     return;
   }
-  if (fileToOut === undefined) {
+  if (!outputInput) {
     errorOutFileNotExist();
     return;
   }
-  const currentDirectory = getCurrentDirectory();
-  const fileToDeCompressPath = path.resolve(currentDirectory, fileToDeCompress);
-  const fileToOutPath = path.resolve(currentDirectory, fileToOut);
 
-  fs.access(fileToOutPath, (err) => {
-    if (err) {
-      fs.access(fileToDeCompressPath, (err) => {
-        if (err) {
-          errorFileNotExist(fileToDeCompress);
-        } else {
-          const streamToDeCompress = fs.createReadStream(fileToDeCompressPath);
-          const streamToOut = fs.createWriteStream(fileToOutPath);
-          const brotliStream = zlib.createBrotliDecompress();
-          streamToDeCompress.pipe(brotliStream).pipe(streamToOut);
-          streamToOut.on('finish', () => {
-            console.log(
-              `Decompression of ${fileToDeCompress} to ${fileToOut} file completed successfully.`
-            );
-            console.log(`You are currently in ${getCurrentDirectory()}`);
-            makePromtMessage();
-          });
-          streamToOut.on('error', (error) => {
-            errorOfDeCompressionFile(error);
-          });
-          makePromtMessage();
-        }
-      });
-    } else {
-      errorOutFileAlredyExist(fileToOut);
+  const currentDirectory = getCurrentDirectory();
+  const sourcePath = path.isAbsolute(fileInput)
+    ? fileInput
+    : path.resolve(currentDirectory, fileInput);
+  const outputPath = path.isAbsolute(outputInput)
+    ? outputInput
+    : path.resolve(currentDirectory, outputInput);
+
+  fs.access(outputPath, fs.constants.F_OK, (outErr) => {
+    if (!outErr) {
+      errorOutFileAlredyExist(outputInput);
+      return;
     }
+    fs.access(sourcePath, fs.constants.F_OK, (srcErr) => {
+      if (srcErr) {
+        errorFileNotExist(fileInput);
+        return;
+      }
+      const readStream = fs.createReadStream(sourcePath);
+      const writeStream = fs.createWriteStream(outputPath);
+      const brotliStream = zlib.createBrotliDecompress();
+      readStream.pipe(brotliStream).pipe(writeStream);
+      writeStream.on('finish', () => {
+        fs.unlink(sourcePath, (unlinkErr) => {
+          const sourceName = path.basename(sourcePath);
+          const outputName = path.basename(outputPath);
+          const outputDir = path.basename(path.dirname(outputPath));
+          if (unlinkErr) {
+            errorOfDeletingFile(unlinkErr);
+            return;
+          }
+          console.log(`File "${sourceName}" decompressed and removed.`);
+          console.log(`Decompressed as "${outputName}" in "${outputDir}"`);
+          console.log(`You are currently in ${getCurrentDirectory()}`);
+          makePromtMessage();
+        });
+      });
+      writeStream.on('error', (error) => {
+        errorOfDeCompressionFile(error);
+      });
+    });
   });
 }

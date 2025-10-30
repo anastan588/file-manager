@@ -22,11 +22,13 @@ makePromtMessage();
 
 readLine.on('line', (input) => {
   console.log(`Received input: ${input}`);
-  makePromtMessage();
-  if (input.trim() === '.exit') {
+
+  if (input.trim() === 'exit') {
     readLine.close();
+    return;
   }
   handleUserInput(input.trim());
+  makePromtMessage();
 });
 
 readLine.on('close', () => {

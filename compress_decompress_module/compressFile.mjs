@@ -8,46 +8,59 @@ import {
   errorOfCompressionFile,
   errorOutFileAlredyExist,
   errorOutFileNotExist,
+  errorOfDeletingFile,
 } from '../erros_handling_module/erros.mjs';
 
-export function compressFile(fileToCompress, fileToOut) {
-  if (fileToCompress === undefined) {
+export function compressFile(fileInput, outputInput) {
+  if (!fileInput) {
     errorCompressFileNotExist();
     return;
   }
-  if (fileToOut === undefined) {
+  if (!outputInput) {
     errorOutFileNotExist();
     return;
   }
   const currentDirectory = getCurrentDirectory();
-  const fileToCompressPath = path.resolve(currentDirectory, fileToCompress);
-  const fileToOutPath = path.resolve(currentDirectory, fileToOut);
+  const sourcePath = path.isAbsolute(fileInput)
+    ? fileInput
+    : path.resolve(currentDirectory, fileInput);
 
-  fs.access(fileToOutPath, (err) => {
-    if (err) {
-      fs.access(fileToCompressPath, (err) => {
-        if (err) {
-          errorFileNotExist(fileToCompress);
-        } else {
-          const streamToCompress = fs.createReadStream(fileToCompressPath);
-          const streamToOut = fs.createWriteStream(fileToOutPath);
-          const brotliStream = zlib.createBrotliCompress();
-          streamToCompress.pipe(brotliStream).pipe(streamToOut);
-          streamToOut.on('finish', () => {
-            console.log(
-              `Compression of ${fileToCompress} to ${fileToOut} file completed successfully.`
-            );
-            console.log(`You are currently in ${getCurrentDirectory()}`);
-            makePromtMessage();
-          });
-          streamToOut.on('error', (error) => {
-            errorOfCompressionFile(error);
-          });
-          makePromtMessage();
-        }
-      });
-    } else {
-      errorOutFileAlredyExist(fileToOut);
+  const outputPath = path.isAbsolute(outputInput)
+    ? outputInput
+    : path.resolve(currentDirectory, outputInput);
+  fs.access(outputPath, fs.constants.F_OK, (outErr) => {
+    if (!outErr) {
+      errorOutFileAlredyExist(outputInput);
+      return;
     }
+    fs.access(sourcePath, fs.constants.F_OK, (srcErr) => {
+      if (srcErr) {
+        errorFileNotExist(fileInput);
+        return;
+      }
+      const readStream = fs.createReadStream(sourcePath);
+      const writeStream = fs.createWriteStream(outputPath);
+      const brotliStream = zlib.createBrotliCompress();
+      readStream.pipe(brotliStream).pipe(writeStream);
+      writeStream.on('finish', () => {
+        fs.unlink(sourcePath, (unlinkErr) => {
+          const sourceName = path.basename(sourcePath);
+          const outputName = path.basename(outputPath);
+          const outputDir = path.basename(path.dirname(outputPath));
+
+          if (unlinkErr) {
+            errorOfDeletingFile(unlinkErr);
+            return;
+          }
+          console.log(`File "${sourceName}" compressed and removed.`);
+          console.log(`Compressed as "${outputName}" in "${outputDir}"`);
+          console.log(`You are currently in ${getCurrentDirectory()}`);
+          makePromtMessage();
+        });
+      });
+      writeStream.on('error', (error) => {
+        errorOfCompressionFile(error);
+      });
+    });
   });
 }

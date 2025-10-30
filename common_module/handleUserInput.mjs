@@ -22,6 +22,7 @@ import { receiveCPUArchitecture } from '../operating_system_module/architecture.
 import { receiveFileHash } from '../hash_module/hash.mjs';
 import { compressFile } from '../compress_decompress_module/compressFile.mjs';
 import { decompressFile } from '../compress_decompress_module/decomPressFile.mjs';
+import { createFolderIncurrentDirectory } from '../operations_files_module/createFolder.mjs';
 
 export function handleUserInput(input) {
   const args = input.trim().split(' ');
@@ -62,8 +63,18 @@ export function handleUserInput(input) {
       }
       createFileIncurrentDirectory(args[1]);
       break;
+    case 'mkdir':
+      if (args.slice(1).length > 1) {
+        errorNameOfFolder();
+        break;
+      }
+      createFolderIncurrentDirectory(args[1]);
+      break;
     case 'rn':
-      const namesOfFilesToRename = args.slice(1);
+      const namesOfFilesToRename = args
+        .slice(1)
+        .map((arg) => arg.trim())
+        .filter((arg) => arg.length > 0);;
       const [sourseFileToRename, destinationFileToRename] =
         namesOfFilesToRename;
       if (sourseFileToRename.split('.').length === 1) {
@@ -76,32 +87,49 @@ export function handleUserInput(input) {
       }
       renameFileIncurrentDirectory(sourseFileToRename, destinationFileToRename);
       break;
-    case 'cp':
-      const namesOfFilesToCopy = args.slice(1);
-      const [sourseFileToCopy, destinationDirectory] = namesOfFilesToCopy;
-      if (sourseFileToCopy.split('.').length === 1) {
+    case 'cp': {
+      const namesOfFilesToCopy = args
+        .slice(1)
+        .map((arg) => arg.trim())
+        .filter((arg) => arg.length > 0);
+      const [sourceFileToCopy, destinationDirectory] = namesOfFilesToCopy;
+
+      if (!sourceFileToCopy || !destinationDirectory) {
+        errorCopyFileNotExist();
+        break;
+      }
+      if (!sourceFileToCopy.includes('.')) {
         errorNameOfFile();
         break;
       }
-      if (destinationDirectory.split('.').length > 1) {
+      if (destinationDirectory.includes('.')) {
         errorNameOfFolder();
         break;
       }
-      copyFileIncurrentDirectory(sourseFileToCopy, destinationDirectory);
+      copyFileIncurrentDirectory(sourceFileToCopy, destinationDirectory);
       break;
-    case 'mv':
-      const namesOfFilesToMove = args.slice(1);
-      const [sourseFileToMove, destinationDirectoryToMove] = namesOfFilesToMove;
-      if (sourseFileToMove.split('.').length === 1) {
+    }
+    case 'mv': {
+      const namesOfFilesToMove = args
+        .slice(1)
+        .map((arg) => arg.trim())
+        .filter((arg) => arg.length > 0);
+      const [sourceFileToMove, destinationDirectoryToMove] = namesOfFilesToMove;
+      if (!sourceFileToMove || !destinationDirectoryToMove) {
+        errorMoveFileNotExist();
+        break;
+      }
+      if (!sourceFileToMove.includes('.')) {
         errorNameOfFile();
         break;
       }
-      if (destinationDirectoryToMove.split('.').length > 1) {
+      if (destinationDirectoryToMove.includes('.')) {
         errorNameOfFolder();
         break;
       }
-      moveFileIncurrentDirectory(sourseFileToMove, destinationDirectoryToMove);
+      moveFileIncurrentDirectory(sourceFileToMove, destinationDirectoryToMove);
       break;
+    }
     case 'rm':
       if (args[1].split('.').length === 1) {
         errorNameOfFile();
@@ -117,7 +145,10 @@ export function handleUserInput(input) {
       receiveFileHash(args[1]);
       break;
     case 'compress':
-      const namesOfFilesToCompress = args.slice(1);
+      const namesOfFilesToCompress = args
+        .slice(1)
+        .map((arg) => arg.trim())
+        .filter((arg) => arg.length > 0);
       const [fileToCompress, fileToOut] = namesOfFilesToCompress;
       if (fileToCompress.split('.').length === 1) {
         errorNameOfFile();
@@ -130,7 +161,10 @@ export function handleUserInput(input) {
       compressFile(fileToCompress, fileToOut);
       break;
     case 'decompress':
-      const namesOfFilesToDeCompress = args.slice(1);
+      const namesOfFilesToDeCompress = args
+        .slice(1)
+        .map((arg) => arg.trim())
+        .filter((arg) => arg.length > 0);;
       const [fileToDECompress, fileToOutDe] = namesOfFilesToDeCompress;
       if (fileToDECompress.split('.').length === 1) {
         errorNameOfFile();
@@ -168,7 +202,7 @@ export function handleUserInput(input) {
           errorPrefix();
       }
       break;
-    case '.exit':
+    case 'exit':
       process.exit(0);
     default:
       errorCommon();

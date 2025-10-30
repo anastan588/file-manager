@@ -11,75 +11,53 @@ import {
   errorOfWritingFile,
 } from '../erros_handling_module/erros.mjs';
 
-export function copyFileIncurrentDirectory(sourseFile, destinationDirectory) {
-  if (sourseFile === undefined) {
+export function copyFileIncurrentDirectory(
+  sourcePathInput,
+  destinationDirInput
+) {
+  if (!sourcePathInput) {
     errorCopyFileNotExist();
     return;
   }
-  if (destinationDirectory === undefined) {
+  if (!destinationDirInput) {
     errorNewDirectoryNotExist();
     return;
   }
   const currentDirectory = getCurrentDirectory();
-  const sourceFilePath = path.resolve(currentDirectory, sourseFile);
+  const sourcePath = path.isAbsolute(sourcePathInput)
+    ? sourcePathInput
+    : path.resolve(currentDirectory, sourcePathInput);
 
-  let destinationDirectoryPath = path.resolve(
-    currentDirectory,
-    destinationDirectory
-  );
-  const parentDirectoryPath = path.dirname(sourceFilePath);
-  let parentDirectoryPathArray = parentDirectoryPath.toLowerCase().split('\\');
+  const destinationDir = path.isAbsolute(destinationDirInput)
+    ? destinationDirInput
+    : path.resolve(currentDirectory, destinationDirInput);
 
-  if (parentDirectoryPathArray.includes(destinationDirectory.toLowerCase())) {
-    let destinationPathArray = parentDirectoryPathArray.slice(
-      0,
-      parentDirectoryPathArray.indexOf(destinationDirectory.toLowerCase()) + 1
-    );
-    let resultPath = destinationPathArray.join('\\');
-    destinationDirectoryPath = resultPath;
-  }
-  let destinationFilePath = path.resolve(destinationDirectoryPath, sourseFile);
-  fs.access(destinationDirectoryPath, (err) => {
-    if (err) {
-      errorDirectoryNotExist(destinationDirectoryPath);
-      fs.mkdir(destinationDirectoryPath, { recursive: true }, (err) => {
-        if (err) {
-          errorOfCreatingDirectory(err);
-        } else {
-          console.log(
-            `Directory ${destinationDirectory} created successfully. You can try to copy file again`
-          );
-          console.log(`You are currently in ${getCurrentDirectory()}`);
-          makePromtMessage();
-        }
-      });
-    } else {
-      fs.access(sourceFilePath, (err) => {
-        if (err) {
-          errorFileNotExist(sourseFile);
-        } else {
-          const readStream = fs.createReadStream(sourceFilePath);
-
-          const writeStream = fs.createWriteStream(destinationFilePath);
-
-          readStream.on('error', (error) => {
-            errorOfReadingFile(error);
-          });
-
-          writeStream.on('error', (error) => {
-            errorOfWritingFile(error);
-          });
-
-          writeStream.on('finish', () => {
-            console.log(
-              `Copy of file ${sourseFile} has been created in ${destinationDirectory} directory`
-            );
-            console.log(`You are currently in ${getCurrentDirectory()}`);
-            makePromtMessage();
-          });
-          readStream.pipe(writeStream);
-        }
-      });
+  const fileName = path.basename(sourcePath);
+  const destinationPath = path.join(destinationDir, fileName);
+  fs.access(sourcePath, fs.constants.F_OK, (srcErr) => {
+    if (srcErr) {
+      errorFileNotExist(sourcePath);
+      return;
     }
+    fs.mkdir(destinationDir, { recursive: true }, (mkdirErr) => {
+      if (mkdirErr) {
+        errorOfCreatingDirectory(mkdirErr);
+        return;
+      }
+
+      const readStream = fs.createReadStream(sourcePath);
+      const writeStream = fs.createWriteStream(destinationPath);
+
+      readStream.on('error', (err) => errorOfReadingFile(err));
+      writeStream.on('error', (err) => errorOfWritingFile(err));
+
+      writeStream.on('finish', () => {
+        console.log(`File "${fileName}" copied to "${destinationDir}"`);
+        console.log(`You are currently in ${getCurrentDirectory()}`);
+        makePromtMessage();
+      });
+
+      readStream.pipe(writeStream);
+    });
   });
 }

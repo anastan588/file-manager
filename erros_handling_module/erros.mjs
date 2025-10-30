@@ -19,7 +19,7 @@ export function errorNameOfFile() {
 }
 
 export function errorNameOfFolder() {
-  console.log('Invalid input. Invalid name of folder');
+  console.log('Invalid input. Invalid name of folder. Name of folder should be with/without underscore, without spaces.');
   console.log(`You are currently in ${getCurrentDirectory()}`);
   makePromtMessage();
 }
@@ -73,44 +73,44 @@ export function errorFileAlreadyExist(file) {
 
 export function errorDirectoryAlreadyExist(directory) {
   console.log(
-    `FS operation failed: Destination ${directory} already exist in current directory`
+    `FS operation failed: Folder ${directory} already exist in current directory`
   );
   console.log(`You are currently in ${getCurrentDirectory()}`);
   makePromtMessage();
 }
 
 export function errorDestinationFileNotExist() {
-  console.log(`FS operation failed: Proper name of file} undefined`);
+  console.log(`FS operation failed: Proper name of file is undefined`);
   console.log(`You are currently in ${getCurrentDirectory()}`);
   makePromtMessage();
 }
 
 export function errorSourceFileNotExist() {
-  console.log(`FS operation failed: Wrong name of file undefined`);
+  console.log(`FS operation failed: Wrong name of file`);
   console.log(`You are currently in ${getCurrentDirectory()}`);
   makePromtMessage();
 }
 
 export function errorCopyFileNotExist() {
-  console.log(`FS operation failed: Name of copy file undefined`);
+  console.log(`FS operation failed: Name of copy file or destination folder is undefined`);
   console.log(`You are currently in ${getCurrentDirectory()}`);
   makePromtMessage();
 }
 
 export function errorNewDirectoryNotExist() {
-  console.log(`FS operation failed: Name of directory to copy undefined`);
+  console.log(`FS operation failed: Name of directory to copy is undefined`);
   console.log(`You are currently in ${getCurrentDirectory()}`);
   makePromtMessage();
 }
 
 export function errorMoveFileNotExist() {
-  console.log(`FS operation failed: Name of move file undefined`);
+  console.log(`FS operation failed: Name of move file or destination folder is undefined`);
   console.log(`You are currently in ${getCurrentDirectory()}`);
   makePromtMessage();
 }
 
 export function errorMoveDirectoryNotExist() {
-  console.log(`FS operation failed: Name of directory to move undefined`);
+  console.log(`FS operation failed: Name of directory to move is undefined`);
   console.log(`You are currently in ${getCurrentDirectory()}`);
   makePromtMessage();
 }
